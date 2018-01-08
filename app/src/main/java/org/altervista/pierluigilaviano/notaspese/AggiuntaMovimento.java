@@ -7,6 +7,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import org.altervista.pierluigilaviano.notaspese.helper.DBManager;
+import org.altervista.pierluigilaviano.notaspese.helper.Movimento;
 
 import java.util.Date;
 
@@ -38,12 +39,11 @@ public class AggiuntaMovimento extends AppCompatActivity {
     }
 
     public void aggiungiMovimento() {
-        Date d = new Date();
-        java.sql.Date data = new java.sql.Date(d.getTime());
+        long data = new Date().getTime();
         String descrizione = mTxtAggiuntaDescrizione.getText().toString();
         double importo = Double.parseDouble(mTxtAggiuntaImporto.getText().toString());
 
-        db.insert(data, descrizione, importo);
+        db.insert(Movimento.getInstance(data, descrizione, importo));
         finish();
     }
 }

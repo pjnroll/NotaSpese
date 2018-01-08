@@ -24,19 +24,19 @@ public class DBManager {
         dbHelper = new DBHelper(ctx);
     }
 
-    public boolean store(Date data, String descr, double mo) {
+    public boolean store(long data, String descr, double mo) {
         SQLiteDatabase db = getDbHelper().getWritableDatabase();
         ContentValues cv = new ContentValues();
 
-        cv.put(C_DATA, String.valueOf(data));
+        cv.put(C_DATA, data);
         cv.put(C_DESCR, descr);
         cv.put(C_MOVIMENTO, mo);
         return (db.insert(TABLE_NAME, null, cv) != -1) ? true : false;
 
     }
 
-   public boolean insert(Date data, String descrizione, double importo) {
-        return store(data, descrizione, importo);
+   public boolean insert(Movimento mo) {
+        return store(mo.data, mo.descrizione, mo.importo);
     }
 
     public void doQuery(String s) {
