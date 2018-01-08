@@ -1,8 +1,7 @@
-git add .package org.altervista.pierluigilaviano.notaspese;
+package org.altervista.pierluigilaviano.notaspese;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -22,12 +21,14 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                // Mostra la seconda activity, contente il creatore della nota spese
             }
         });
     }
 
+    /*
+    Mi servirà nella seconda activity per gestire l'ordinamento (feature)
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -35,6 +36,9 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    /*
+    come sopra
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
