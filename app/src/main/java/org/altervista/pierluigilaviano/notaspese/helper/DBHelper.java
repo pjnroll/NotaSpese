@@ -18,7 +18,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         String query = "CREATE TABLE " + TABLE_NAME +
                 " ( _id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                C_DATA + " TEXT DEFAULT NULL," +    //watchout this
+                C_DATA + " DATE DEFAULT NULL," +    //watchout this
                 C_DESCR + " VARCHAR(50) DEFAULT NULL," +
                 C_MOVIMENTO + " REAL DEFAULT NULL," +
                 ");";

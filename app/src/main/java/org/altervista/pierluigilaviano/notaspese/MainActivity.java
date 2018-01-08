@@ -8,7 +8,10 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import org.altervista.pierluigilaviano.notaspese.helper.DBManager;
+
 public class MainActivity extends AppCompatActivity {
+    public static DBManager db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -16,6 +19,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        db = new DBManager(this);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -26,8 +31,8 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    /*
-    Mi servirà nella seconda activity per gestire l'ordinamento (feature)
+    /**
+     * Utilizzare il menu per gestire l'ordinamento dei movimenti (feature)
      */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -36,9 +41,6 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    /*
-    come sopra
-     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will

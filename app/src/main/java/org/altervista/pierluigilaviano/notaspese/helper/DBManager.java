@@ -7,6 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.util.Log;
 
+import java.sql.Date;
+
 import static org.altervista.pierluigilaviano.notaspese.helper.Constants.*;
 
 
@@ -22,20 +24,20 @@ public class DBManager {
         dbHelper = new DBHelper(ctx);
     }
 
-    public boolean store(String data, String descr, double mo) {
+    public boolean store(Date data, String descr, double mo) {
         SQLiteDatabase db = getDbHelper().getWritableDatabase();
         ContentValues cv = new ContentValues();
 
-        cv.put(C_DATA, data);
+        cv.put(C_DATA, String.valueOf(data));
         cv.put(C_DESCR, descr);
         cv.put(C_MOVIMENTO, mo);
         return (db.insert(TABLE_NAME, null, cv) != -1) ? true : false;
 
     }
 
-   /* public boolean insert(Alarm a) {
-        return store(a.getLabel(), a.getYear(), a.getMonth(), a.getDay(), a.getHours(), a.getMinutes());
-    }*/
+   public boolean insert(Date data, String descrizione, double importo) {
+        return store(data, descrizione, importo);
+    }
 
     public void doQuery(String s) {
         SQLiteDatabase db = getDbHelper().getWritableDatabase();
