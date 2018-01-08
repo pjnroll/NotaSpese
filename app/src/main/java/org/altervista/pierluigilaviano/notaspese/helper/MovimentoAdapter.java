@@ -6,11 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ListAdapter;
 import android.widget.TextView;
 
 import org.altervista.pierluigilaviano.notaspese.R;
-import org.apache.http.conn.ConnectTimeoutException;
 
 import java.sql.Date;
 import java.util.ArrayList;
