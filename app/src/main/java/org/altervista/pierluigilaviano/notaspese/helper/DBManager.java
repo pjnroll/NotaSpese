@@ -31,7 +31,7 @@ public class DBManager {
         cv.put(C_DATA, data);
         cv.put(C_DESCR, descr);
         cv.put(C_MOVIMENTO, mo);
-        return (db.insert(TABLE_NAME, null, cv) != -1) ? true : false;
+        return db.insert(TABLE_NAME, null, cv) != -1;
 
     }
 
