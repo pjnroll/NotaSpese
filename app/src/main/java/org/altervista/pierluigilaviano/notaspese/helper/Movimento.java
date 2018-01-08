@@ -3,13 +3,15 @@ package org.altervista.pierluigilaviano.notaspese.helper;
 import java.sql.Date;
 
 /**
- * Created by Pj94 on 08/01/2018.
+ * Un Movimento è una entrata o uscita di denaro
  */
-
 public class Movimento {
+    /**
+     * Data espressa in millisecondi
+     */
     public long data;
-    public String descrizione;
-    public double importo;
+    String descrizione;
+    double importo;
 
     private Movimento(long data, String descrizione, double importo) {
         this.data = data;
@@ -17,7 +19,19 @@ public class Movimento {
         this.importo = importo;
     }
 
+    /**
+     * Static factory method per ottenere un'istanza di Movimento
+     * @param data
+     * @param descrizione
+     * @param importo
+     * @return
+     */
     public static Movimento getInstance(long data, String descrizione, double importo) {
         return new Movimento(data, descrizione, importo);
+    }
+
+    @Override
+    public String toString() {
+        return descrizione + " " + new Date(data).toString();
     }
 }

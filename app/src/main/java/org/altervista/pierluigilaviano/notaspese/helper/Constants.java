@@ -1,10 +1,6 @@
 package org.altervista.pierluigilaviano.notaspese.helper;
 
 /**
- * Created by Pj94 on 08/01/2018.
- */
-
-/**
  * Classe di utilità contenente le stringhe utilizzate per la gestione del database
  */
 public class Constants {

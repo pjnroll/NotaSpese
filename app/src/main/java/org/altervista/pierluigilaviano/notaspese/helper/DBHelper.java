@@ -4,17 +4,25 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import static org.altervista.pierluigilaviano.notaspese.helper.Constants.*;
-/**
- * Created by Pj94 on 08/01/2018.
- */
+import static org.altervista.pierluigilaviano.notaspese.helper.Constants.C_DATA;
+import static org.altervista.pierluigilaviano.notaspese.helper.Constants.C_DESCR;
+import static org.altervista.pierluigilaviano.notaspese.helper.Constants.C_MOVIMENTO;
+import static org.altervista.pierluigilaviano.notaspese.helper.Constants.DB_NAME;
+import static org.altervista.pierluigilaviano.notaspese.helper.Constants.TABLE_NAME;
 
+/**
+ * Generazione del db
+ */
 public class DBHelper extends SQLiteOpenHelper {
 
-    public DBHelper(Context ctx) {
+    DBHelper(Context ctx) {
         super(ctx, DB_NAME, null, 1);
     }
 
+    /**
+     * Creazione della struttura del db
+     * @param db
+     */
     public void onCreate(SQLiteDatabase db) {
         String query = "CREATE TABLE " + TABLE_NAME +
                 " ( _id INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -25,6 +33,12 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(query);
     }
 
+    /**
+     * Utilizzato al cambiamento di versione del db
+     * @param db
+     * @param oldVersion
+     * @param newVersion
+     */
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
     }

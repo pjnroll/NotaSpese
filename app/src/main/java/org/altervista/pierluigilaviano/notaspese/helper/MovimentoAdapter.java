@@ -12,15 +12,15 @@ import org.altervista.pierluigilaviano.notaspese.R;
 
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
- * Created by Pj94 on 08/01/2018.
+ * Adapter per gestire i movimenti
  */
-
 public class MovimentoAdapter extends BaseAdapter {
     private Context ctx;
 
-    public ArrayList<Movimento> movimenti;
+    private List<Movimento> movimenti;
 
     public MovimentoAdapter(Context ctx, ArrayList<Movimento> movimenti) {
         this.ctx = ctx;
