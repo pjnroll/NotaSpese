@@ -12,6 +12,12 @@
         android:layout_height="wrap_content"
         android:hint="Descrizione"/>
 
+    <EditText
+        android:id="@+id/txtAggiuntaData"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="AAAA/MM/GG" />
+
     <LinearLayout
         android:id="@+id/llAggiuntaMovimento1"
         xmlns:android="http://schemas.android.com/apk/res/android"

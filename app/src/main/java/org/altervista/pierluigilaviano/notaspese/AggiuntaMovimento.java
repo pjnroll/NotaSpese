@@ -9,14 +9,19 @@ import android.widget.EditText;
 import org.altervista.pierluigilaviano.notaspese.helper.DBManager;
 import org.altervista.pierluigilaviano.notaspese.helper.Movimento;
 
+import java.text.DateFormat;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 import static org.altervista.pierluigilaviano.notaspese.MainActivity.db;
 
+/**
+ * Activity per aggiungere un nuovo Movimento
+ */
 public class AggiuntaMovimento extends AppCompatActivity {
+    private EditText mTxtAggiuntaData;
     private EditText mTxtAggiuntaImporto;
     private EditText mTxtAggiuntaDescrizione;
-    private Button mBtnAggiungi;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +32,7 @@ public class AggiuntaMovimento extends AppCompatActivity {
 
         mTxtAggiuntaImporto = findViewById(R.id.txtAggiuntaImporto);
         mTxtAggiuntaDescrizione = findViewById(R.id.txtAggiuntaDescrizione);
-        mBtnAggiungi = findViewById(R.id.btnAggiungi);
+        Button mBtnAggiungi = findViewById(R.id.btnAggiungi);
         mBtnAggiungi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -38,8 +43,20 @@ public class AggiuntaMovimento extends AppCompatActivity {
         });
     }
 
+    /**
+     * Aggiunge un movimento al database
+     */
     public void aggiungiMovimento() {
-        long data = new Date().getTime();
+        mTxtAggiuntaData = findViewById(R.id.txtAggiuntaData);
+        long data;
+        if (!mTxtAggiuntaData.getText().toString().isEmpty()) {
+            String[] dataArray;
+            String dataStringa = mTxtAggiuntaData.getText().toString();
+            dataArray = dataStringa.split("/");
+            data = new GregorianCalendar(Integer.parseInt(dataArray[0]), (Integer.parseInt(dataArray[1]) - 1), Integer.parseInt(dataArray[2])).getTime().getTime();
+        } else {
+            data = new Date().getTime();
+        }
         String descrizione = mTxtAggiuntaDescrizione.getText().toString();
         double importo = Double.parseDouble(mTxtAggiuntaImporto.getText().toString());
 
