@@ -1,7 +1,6 @@
 package org.altervista.pierluigilaviano.notaspese.helper;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import java.sql.Date;
 

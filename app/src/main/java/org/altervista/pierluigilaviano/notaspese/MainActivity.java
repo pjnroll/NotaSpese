@@ -1,14 +1,10 @@
 package org.altervista.pierluigilaviano.notaspese;
 
-import android.app.LauncherActivity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.view.menu.ListMenuItemView;
-import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
@@ -35,14 +31,11 @@ public class MainActivity extends AppCompatActivity {
     private Menu mMenu;
     boolean sortedByDate = false;
     private ListView mLwList;
-    private View mFocusedView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        mFocusedView = getCurrentFocus();
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
