@@ -18,6 +18,7 @@ import org.altervista.pierluigilaviano.notaspese.helper.MovimentoAdapter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -26,6 +27,9 @@ import static org.altervista.pierluigilaviano.notaspese.helper.Constants.*;
 
 public class MainActivity extends AppCompatActivity {
     public static DBManager db;
+
+    private Menu mMenu;
+    boolean sortedByDate = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,10 +106,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void ordinaPerData() {
-//        ordinato = true;
         ListView lwList = findViewById(R.id.lvMovimenti);
 
-        Set<Movimento> ordinati = new TreeSet<>(getMovimenti());
+        List<Movimento> movList = getMovimenti();
+        Set<Movimento> ordinati = new TreeSet<>();
+        ordinati.addAll(movList);
+        for (Movimento m : ordinati) {
+            Log.i("MOVIMENTO->", m.toString());
+        }
         List<Movimento> movListOrdinati = new ArrayList<>();
         movListOrdinati.addAll(ordinati);
         MovimentoAdapter movOrdinati;
@@ -123,8 +131,15 @@ public class MainActivity extends AppCompatActivity {
      */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        // I steal the menu MUHAHAHA
+        mMenu = menu;
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        if (sortedByDate) {
+            menu.getItem(idx_sort_by_date).setEnabled(false);
+        } else {
+            menu.getItem(idx_sort_default).setEnabled(false);
+        }
         return true;
     }
 
@@ -136,8 +151,19 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_sort) {
-            ordinaPerData();
+        if (id == R.id.action_sort_by_date || id == R.id.action_sort_default) {
+            if (id == R.id.action_sort_by_date) {
+                ordinaPerData();
+                /*mMenu.getItem(idx_sort_by_date).setEnabled(false);
+                mMenu.getItem(idx_sort_default).setEnabled(true);*/
+            } else {
+                updateListView();
+                /*mMenu.getItem(idx_sort_by_date).setEnabled(true);
+                mMenu.getItem(idx_sort_default).setEnabled(false);*/
+            }
+            mMenu.getItem(idx_sort_by_date).setEnabled(sortedByDate);
+            mMenu.getItem(idx_sort_default).setEnabled(!sortedByDate);
+            sortedByDate = !sortedByDate;
         }
         return super.onOptionsItemSelected(item);
     }

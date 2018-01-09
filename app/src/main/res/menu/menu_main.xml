@@ -3,8 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="org.altervista.pierluigilaviano.notaspese.MainActivity">
     <item
-        android:id="@+id/action_sort"
+        android:id="@+id/action_sort_by_date"
         android:orderInCategory="100"
         android:title="Ordina per data"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/action_sort_default"
+        android:orderInCategory="100"
+        android:title="Ordina per inserimento"
+        app:showAsAction="never" />
+
 </menu>

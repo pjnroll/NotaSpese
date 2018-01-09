@@ -1,6 +1,7 @@
 package org.altervista.pierluigilaviano.notaspese.helper;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import java.sql.Date;
 
@@ -39,7 +40,6 @@ public class Movimento implements Comparable<Movimento> {
 
     @Override
     public int compareTo(@NonNull Movimento movimento) {
-        int diff = (int) (this.data - movimento.data);
-        return (diff == 0) ? -1 : diff;
+        return (new Date(this.data)).compareTo(new Date(movimento.data));
     }
 }
