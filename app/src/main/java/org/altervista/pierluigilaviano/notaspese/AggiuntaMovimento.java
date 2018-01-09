@@ -9,7 +9,6 @@ import android.widget.EditText;
 import org.altervista.pierluigilaviano.notaspese.helper.DBManager;
 import org.altervista.pierluigilaviano.notaspese.helper.Movimento;
 
-import java.text.DateFormat;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
