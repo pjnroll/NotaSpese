@@ -1,0 +1,2 @@
+2018/01/09
+Prossima implementazione: fragment master-detail per la descrizione dei movimenti
