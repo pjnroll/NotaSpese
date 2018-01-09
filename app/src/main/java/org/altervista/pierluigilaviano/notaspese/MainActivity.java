@@ -1,15 +1,20 @@
 package org.altervista.pierluigilaviano.notaspese;
 
+import android.app.LauncherActivity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.view.menu.ListMenuItemView;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import org.altervista.pierluigilaviano.notaspese.helper.DBManager;
@@ -18,7 +23,6 @@ import org.altervista.pierluigilaviano.notaspese.helper.MovimentoAdapter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -30,11 +34,16 @@ public class MainActivity extends AppCompatActivity {
 
     private Menu mMenu;
     boolean sortedByDate = false;
+    private ListView mLwList;
+    private View mFocusedView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mFocusedView = getCurrentFocus();
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -54,10 +63,12 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
+
+        mLwList = findViewById(R.id.lvMovimenti);
+        mLwList.setOnItemLongClickListener(getDeleteItemListener());
     }
 
     private void updateListView() {
-        ListView lwList = findViewById(R.id.lvMovimenti);
         MovimentoAdapter adapter = null;
 
         List<Movimento> movimenti = getMovimenti();
@@ -66,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
             adapter = new MovimentoAdapter(getBaseContext(), movimenti);
         }
 
-        lwList.setAdapter(adapter);
+        mLwList.setAdapter(adapter);
     }
 
     private List<Movimento> getMovimenti() {
@@ -106,8 +117,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void ordinaPerData() {
-        ListView lwList = findViewById(R.id.lvMovimenti);
-
         List<Movimento> movList = getMovimenti();
         Set<Movimento> ordinati = new TreeSet<>();
         ordinati.addAll(movList);
@@ -120,10 +129,11 @@ public class MainActivity extends AppCompatActivity {
 
         if (movListOrdinati.size() > 0) {
             movOrdinati = new MovimentoAdapter(getBaseContext(), movListOrdinati);
-            lwList.setAdapter(movOrdinati);
+            mLwList.setAdapter(movOrdinati);
         } else {
             updateListView();
         }
+
     }
 
     /**
@@ -131,7 +141,6 @@ public class MainActivity extends AppCompatActivity {
      */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // I steal the menu MUHAHAHA
         mMenu = menu;
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
@@ -154,17 +163,43 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.action_sort_by_date || id == R.id.action_sort_default) {
             if (id == R.id.action_sort_by_date) {
                 ordinaPerData();
-                /*mMenu.getItem(idx_sort_by_date).setEnabled(false);
-                mMenu.getItem(idx_sort_default).setEnabled(true);*/
             } else {
                 updateListView();
-                /*mMenu.getItem(idx_sort_by_date).setEnabled(true);
-                mMenu.getItem(idx_sort_default).setEnabled(false);*/
             }
             mMenu.getItem(idx_sort_by_date).setEnabled(sortedByDate);
             mMenu.getItem(idx_sort_default).setEnabled(!sortedByDate);
             sortedByDate = !sortedByDate;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+
+    private AdapterView.OnItemLongClickListener getDeleteItemListener () {
+        AdapterView.OnItemLongClickListener deleteItemListener = new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(final AdapterView<?> adapterView, View view, final int i, long l) {
+                android.widget.PopupMenu popupMenu = new android.widget.PopupMenu(getApplicationContext(), view);
+                popupMenu.getMenuInflater().inflate(R.menu.menu_delete, popupMenu.getMenu());
+
+                popupMenu.setOnMenuItemClickListener(new android.widget.PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch (item.getTitle().toString()) {
+                            case ("Cancella"):
+                                break;
+
+                            default:
+                                break;
+                        }
+                        return true;
+                    }
+                });
+
+                popupMenu.show();
+
+                return true;
+            }
+        };
+        return deleteItemListener;
     }
 }
