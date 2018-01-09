@@ -1,11 +1,13 @@
 package org.altervista.pierluigilaviano.notaspese.helper;
 
+import android.support.annotation.NonNull;
+
 import java.sql.Date;
 
 /**
  * Un Movimento è una entrata o uscita di denaro
  */
-public class Movimento {
+public class Movimento implements Comparable<Movimento> {
     /**
      * Data espressa in millisecondi
      */
@@ -33,5 +35,11 @@ public class Movimento {
     @Override
     public String toString() {
         return descrizione + " " + new Date(data).toString();
+    }
+
+    @Override
+    public int compareTo(@NonNull Movimento movimento) {
+        int diff = (int) (this.data - movimento.data);
+        return (diff == 0) ? -1 : diff;
     }
 }

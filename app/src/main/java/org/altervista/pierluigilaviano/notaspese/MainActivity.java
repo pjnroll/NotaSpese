@@ -16,9 +16,11 @@ import org.altervista.pierluigilaviano.notaspese.helper.DBManager;
 import org.altervista.pierluigilaviano.notaspese.helper.Movimento;
 import org.altervista.pierluigilaviano.notaspese.helper.MovimentoAdapter;
 
-import java.sql.Date;
-import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import static org.altervista.pierluigilaviano.notaspese.helper.Constants.*;
 
@@ -29,12 +31,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         db = new DBManager(this);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -53,8 +55,19 @@ public class MainActivity extends AppCompatActivity {
     private void updateListView() {
         ListView lwList = findViewById(R.id.lvMovimenti);
         MovimentoAdapter adapter = null;
+
+        List<Movimento> movimenti = getMovimenti();
+
+        if (movimenti != null && movimenti.size() > 0) {
+            adapter = new MovimentoAdapter(getBaseContext(), movimenti);
+        }
+
+        lwList.setAdapter(adapter);
+    }
+
+    private List<Movimento> getMovimenti() {
         Cursor crs = db.query();
-        ArrayList<Movimento> movimenti = new ArrayList<>();
+        List<Movimento> movimenti = new ArrayList<>();
         if (crs != null && crs.getCount() != 0) {
             while (crs.moveToNext()) {
                 long data = crs.getLong(crs.getColumnIndex(C_DATA));
@@ -63,21 +76,16 @@ public class MainActivity extends AppCompatActivity {
 
                 movimenti.add(Movimento.getInstance(data, descrizione, importo));
             }
-            adapter = new MovimentoAdapter(getBaseContext(), movimenti);
         }
 
-        if (adapter != null) {
-            lwList.setAdapter(adapter);
-        } else {
-            lwList.setAdapter(null);
-        }
+        return movimenti;
     }
 
     private void delete() {
         boolean exists = false;
         String[] lista = getApplicationContext().databaseList();
-        for (int i = 0; i < lista.length && exists == false; i++) {
-            Log.i("LISTADB", lista.toString());
+        for (int i = 0; i < lista.length && !exists; i++) {
+            Log.i("LISTADB", Arrays.toString(lista));
             if (lista[i].equals(DB_NAME))
                 exists = true;
         }
@@ -91,6 +99,23 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         updateListView();
+    }
+
+    private void ordinaPerData() {
+//        ordinato = true;
+        ListView lwList = findViewById(R.id.lvMovimenti);
+
+        Set<Movimento> ordinati = new TreeSet<>(getMovimenti());
+        List<Movimento> movListOrdinati = new ArrayList<>();
+        movListOrdinati.addAll(ordinati);
+        MovimentoAdapter movOrdinati;
+
+        if (movListOrdinati.size() > 0) {
+            movOrdinati = new MovimentoAdapter(getBaseContext(), movListOrdinati);
+            lwList.setAdapter(movOrdinati);
+        } else {
+            updateListView();
+        }
     }
 
     /**
@@ -111,8 +136,8 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        if (id == R.id.action_sort) {
+            ordinaPerData();
         }
         return super.onOptionsItemSelected(item);
     }

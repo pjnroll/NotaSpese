@@ -22,7 +22,7 @@ public class MovimentoAdapter extends BaseAdapter {
 
     private List<Movimento> movimenti;
 
-    public MovimentoAdapter(Context ctx, ArrayList<Movimento> movimenti) {
+    public MovimentoAdapter(Context ctx, List<Movimento> movimenti) {
         this.ctx = ctx;
         this.movimenti = new ArrayList<>(movimenti);
     }
@@ -39,7 +39,7 @@ public class MovimentoAdapter extends BaseAdapter {
 
     @Override
     public long getItemId(int i) {
-        return 1;
+        return 0;
     }
 
     @SuppressLint("ViewHolder")

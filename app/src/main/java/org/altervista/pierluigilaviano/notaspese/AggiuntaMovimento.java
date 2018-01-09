@@ -1,5 +1,6 @@
 package org.altervista.pierluigilaviano.notaspese;
 
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.widget.EditText;
 
 import org.altervista.pierluigilaviano.notaspese.helper.DBManager;
 import org.altervista.pierluigilaviano.notaspese.helper.Movimento;
+import org.altervista.pierluigilaviano.notaspese.helper.Utils;
 
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -55,6 +57,11 @@ public class AggiuntaMovimento extends AppCompatActivity {
             data = new GregorianCalendar(Integer.parseInt(dataArray[0]), (Integer.parseInt(dataArray[1]) - 1), Integer.parseInt(dataArray[2])).getTime().getTime();
         } else {
             data = new Date().getTime();
+        }
+        if (data > new GregorianCalendar().getTimeInMillis()) {
+            Utils.hideKeyboard(getBaseContext(), getCurrentFocus());
+            Snackbar.make(getCurrentFocus(), "Impossibile inserire date future", Snackbar.LENGTH_LONG).show();
+            return;
         }
         String descrizione = mTxtAggiuntaDescrizione.getText().toString();
         double importo = Double.parseDouble(mTxtAggiuntaImporto.getText().toString());
