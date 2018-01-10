@@ -44,22 +44,15 @@ public class Movimento implements Comparable<Movimento> {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         Movimento movimento = (Movimento) o;
 
         return data == movimento.data && Double.compare(movimento.importo, importo) == 0 && (descrizione != null ? descrizione.equals(movimento.descrizione) : movimento.descrizione == null);
-    }
-
-    @Override
-    public int hashCode() {
-        int result;
-        long temp;
-        result = (int) (data ^ (data >>> 32));
-        result = 31 * result + (descrizione != null ? descrizione.hashCode() : 0);
-        temp = Double.doubleToLongBits(importo);
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
-        return result;
     }
 }
