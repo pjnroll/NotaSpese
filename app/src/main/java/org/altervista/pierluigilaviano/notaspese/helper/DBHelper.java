@@ -21,7 +21,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     /**
      * Creazione della struttura del db
-     * @param db
+     * @param db the global db instance
      */
     public void onCreate(SQLiteDatabase db) {
         String query = "CREATE TABLE " + TABLE_NAME +
@@ -35,9 +35,9 @@ public class DBHelper extends SQLiteOpenHelper {
 
     /**
      * Utilizzato al cambiamento di versione del db
-     * @param db
-     * @param oldVersion
-     * @param newVersion
+     * @param db the db
+     * @param oldVersion the old version
+     * @param newVersion the new version
      */
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);

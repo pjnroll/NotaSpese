@@ -4,6 +4,9 @@ import android.content.Context;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
+/**
+ * Util class, cmon
+ */
 public class Utils {
     /**
       * Util method that allows to hide the keyboard after the user presses a Button

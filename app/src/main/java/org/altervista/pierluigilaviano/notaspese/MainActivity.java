@@ -23,9 +23,21 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-import static org.altervista.pierluigilaviano.notaspese.helper.Constants.*;
+import static org.altervista.pierluigilaviano.notaspese.helper.Constants.idx_sort_by_date;
+import static org.altervista.pierluigilaviano.notaspese.helper.Constants.idx_sort_default;
+import static org.altervista.pierluigilaviano.notaspese.helper.Constants.C_DATA;
+import static org.altervista.pierluigilaviano.notaspese.helper.Constants.C_DESCR;
+import static org.altervista.pierluigilaviano.notaspese.helper.Constants.C_MOVIMENTO;
+import static org.altervista.pierluigilaviano.notaspese.helper.Constants.DB_NAME;
+import static org.altervista.pierluigilaviano.notaspese.helper.Constants.TABLE_NAME;
 
+/**
+ * Damn Kiuwan
+ */
 public class MainActivity extends AppCompatActivity {
+    /**
+     * The global db istance
+     */
     public static DBManager db;
 
     private Menu mMenu;
@@ -168,7 +180,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     private AdapterView.OnItemLongClickListener getDeleteItemListener () {
-        AdapterView.OnItemLongClickListener deleteItemListener = new AdapterView.OnItemLongClickListener() {
+        return new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(final AdapterView<?> adapterView, View view, final int i, long l) {
                 android.widget.PopupMenu popupMenu = new android.widget.PopupMenu(getApplicationContext(), view);
@@ -193,6 +205,5 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         };
-        return deleteItemListener;
     }
 }

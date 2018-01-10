@@ -16,12 +16,12 @@ import static org.altervista.pierluigilaviano.notaspese.helper.Constants.TABLE_N
  * Gestore del database
  */
 public class DBManager {
-    final static String TAG = "DBManager";
+    private final static String TAG = "DBManager";
     private DBHelper dbHelper;
 
     /**
      * Costruttore; prende in ingresso il contesto
-     * @param ctx
+     * @param ctx the application's context
      */
     public DBManager(Context ctx) {
         dbHelper = new DBHelper(ctx);
@@ -39,8 +39,8 @@ public class DBManager {
 
     /**
      * Prova ad effettuare l'inserimento nel db
-     * @param mo
-     * @return
+     * @param mo the movimendooo
+     * @return eddaje
      */
     public boolean insert(Movimento mo) {
         return store(mo.data, mo.descrizione, mo.importo);
@@ -48,7 +48,7 @@ public class DBManager {
 
     /**
      * Esegue una query sql (non neutralizzata)
-     * @param s
+     * @param s the query
      */
     public void doQuery(String s) {
         SQLiteDatabase db = getDbHelper().getWritableDatabase();
@@ -57,7 +57,7 @@ public class DBManager {
 
     /**
      * Restituisce il risultato di una query
-     * @return
+     * @return the result of the query
      */
     public Cursor query() {
         Cursor cursor = null;

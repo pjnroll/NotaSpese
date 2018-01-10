@@ -3,6 +3,7 @@ package org.altervista.pierluigilaviano.notaspese;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,7 +21,6 @@ import static org.altervista.pierluigilaviano.notaspese.MainActivity.db;
  * Activity per aggiungere un nuovo Movimento
  */
 public class AggiuntaMovimento extends AppCompatActivity {
-    private EditText mTxtAggiuntaData;
     private EditText mTxtAggiuntaImporto;
     private EditText mTxtAggiuntaDescrizione;
 
@@ -48,7 +48,7 @@ public class AggiuntaMovimento extends AppCompatActivity {
      * Aggiunge un movimento al database
      */
     public void aggiungiMovimento() {
-        mTxtAggiuntaData = findViewById(R.id.txtAggiuntaData);
+        EditText mTxtAggiuntaData = findViewById(R.id.txtAggiuntaData);
         long data;
         if (!mTxtAggiuntaData.getText().toString().isEmpty()) {
             String[] dataArray;
@@ -66,7 +66,9 @@ public class AggiuntaMovimento extends AppCompatActivity {
         String descrizione = mTxtAggiuntaDescrizione.getText().toString();
         double importo = Double.parseDouble(mTxtAggiuntaImporto.getText().toString());
 
-        db.insert(Movimento.getInstance(data, descrizione, importo));
+        if (db.insert(Movimento.getInstance(data, descrizione, importo))) {
+            Log.i("AggiuntaMovimento", "Inserito");
+        }
         finish();
     }
 }

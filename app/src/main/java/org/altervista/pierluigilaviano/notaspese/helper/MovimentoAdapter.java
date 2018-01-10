@@ -33,7 +33,7 @@ public class MovimentoAdapter extends BaseAdapter {
     }
 
     @Override
-    public Object getItem(int i) {
+    public Movimento getItem(int i) {
         return movimenti.get(i);
     }
 
@@ -42,7 +42,7 @@ public class MovimentoAdapter extends BaseAdapter {
         return 0;
     }
 
-    @SuppressLint("ViewHolder")
+    @SuppressLint({"ViewHolder", "InflateParams", "SetTextI18n"})
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         LayoutInflater inflater = LayoutInflater.from(ctx);
@@ -52,7 +52,7 @@ public class MovimentoAdapter extends BaseAdapter {
         TextView mTxtMovimento = view.findViewById(R.id.txtMovimento);
         mTxtDescr.setText(movimenti.get(i).descrizione);
         mTxtData.setText(new Date(movimenti.get(i).data).toString());
-        mTxtMovimento.setText(String.valueOf(movimenti.get(i).importo) + " " + ctx.getString(R.string.euro).toString());
+        mTxtMovimento.setText(String.valueOf(movimenti.get(i).importo) + " " + ctx.getString(R.string.euro));
         return view;
     }
 }
