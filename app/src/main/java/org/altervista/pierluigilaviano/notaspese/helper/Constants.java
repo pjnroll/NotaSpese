@@ -3,7 +3,7 @@ package org.altervista.pierluigilaviano.notaspese.helper;
 /**
  * Classe di utilità contenente le stringhe utilizzate per la gestione del database e altre
  */
-public class Constants {
+public final class Constants {
 
     /**
      * Nome del database
