@@ -12,8 +12,8 @@ public class Movimento implements Comparable<Movimento> {
      * Data espressa in millisecondi
      */
     public long data;
-    String descrizione;
-    double importo;
+    public String descrizione;
+    public double importo;
 
     private Movimento(long data, String descrizione, double importo) {
         this.data = data;

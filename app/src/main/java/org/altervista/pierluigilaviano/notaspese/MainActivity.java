@@ -1,6 +1,7 @@
 package org.altervista.pierluigilaviano.notaspese;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -12,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import org.altervista.pierluigilaviano.notaspese.helper.DBManager;
 import org.altervista.pierluigilaviano.notaspese.helper.Movimento;
@@ -23,6 +25,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import static org.altervista.pierluigilaviano.notaspese.helper.Constants.SORTED_BY_DATE;
 import static org.altervista.pierluigilaviano.notaspese.helper.Constants.idx_sort_by_date;
 import static org.altervista.pierluigilaviano.notaspese.helper.Constants.idx_sort_default;
 import static org.altervista.pierluigilaviano.notaspese.helper.Constants.C_DATA;
@@ -41,13 +44,17 @@ public class MainActivity extends AppCompatActivity {
     public static DBManager db;
 
     private Menu mMenu;
-    boolean sortedByDate = false;
+    boolean sortedByDate;
     private ListView mLwList;
+    private SharedPreferences sp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        sp = getPreferences(MODE_PRIVATE);
+        sortedByDate = sp.getBoolean(SORTED_BY_DATE, false);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -73,16 +80,10 @@ public class MainActivity extends AppCompatActivity {
         mLwList.setOnItemLongClickListener(getDeleteItemListener());
     }
 
-    private void updateListView() {
-        MovimentoAdapter adapter = null;
+    protected void onPause() {
+        sp.edit().putBoolean(SORTED_BY_DATE, sortedByDate).apply();
 
-        List<Movimento> movimenti = getMovimenti();
-
-        if (movimenti != null && movimenti.size() > 0) {
-            adapter = new MovimentoAdapter(getBaseContext(), movimenti);
-        }
-
-        mLwList.setAdapter(adapter);
+        super.onPause();
     }
 
     private List<Movimento> getMovimenti() {
@@ -112,13 +113,29 @@ public class MainActivity extends AppCompatActivity {
         if (exists) {
             db.doQuery("DELETE FROM " + TABLE_NAME);
             getBaseContext().deleteDatabase(DB_NAME);
-            updateListView();
+            ordinaPerInserimento();
         }
     }
 
     protected void onResume() {
         super.onResume();
-        updateListView();
+        if (sortedByDate) {
+            ordinaPerData();
+        } else {
+            ordinaPerInserimento();
+        }
+    }
+
+    private void ordinaPerInserimento() {
+        MovimentoAdapter adapter = null;
+
+        List<Movimento> movimenti = getMovimenti();
+
+        if (movimenti != null && movimenti.size() > 0) {
+            adapter = new MovimentoAdapter(getBaseContext(), movimenti);
+        }
+
+        mLwList.setAdapter(adapter);
     }
 
     private void ordinaPerData() {
@@ -136,7 +153,7 @@ public class MainActivity extends AppCompatActivity {
             movOrdinati = new MovimentoAdapter(getBaseContext(), movListOrdinati);
             mLwList.setAdapter(movOrdinati);
         } else {
-            updateListView();
+            ordinaPerInserimento();
         }
 
     }
@@ -151,8 +168,10 @@ public class MainActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         if (sortedByDate) {
             menu.getItem(idx_sort_by_date).setEnabled(false);
+            ordinaPerData();
         } else {
             menu.getItem(idx_sort_default).setEnabled(false);
+            ordinaPerInserimento();
         }
         return true;
     }
@@ -169,11 +188,12 @@ public class MainActivity extends AppCompatActivity {
             if (id == R.id.action_sort_by_date) {
                 ordinaPerData();
             } else {
-                updateListView();
+                ordinaPerInserimento();
             }
             mMenu.getItem(idx_sort_by_date).setEnabled(sortedByDate);
             mMenu.getItem(idx_sort_default).setEnabled(!sortedByDate);
             sortedByDate = !sortedByDate;
+            sp.edit().putBoolean(SORTED_BY_DATE, sortedByDate).apply();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -191,6 +211,7 @@ public class MainActivity extends AppCompatActivity {
                     public boolean onMenuItemClick(MenuItem item) {
                         switch (item.getTitle().toString()) {
                             case ("Cancella"):
+                                deleteItem(adapterView, i);
                                 break;
 
                             default:
@@ -205,5 +226,27 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         };
+    }
+
+    private void deleteItem(AdapterView<?> adapterView, int i) {
+        Movimento toDel;
+        toDel = ((MovimentoAdapter) adapterView.getAdapter()).getItem(i);
+        if (doDeleteQuery(toDel)) {
+            Toast.makeText(getBaseContext(), "Elemento rimosso", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(getBaseContext(), "Elemento non rimosso", Toast.LENGTH_SHORT).show();
+        }
+        onResume();
+    }
+
+    private boolean doDeleteQuery(Movimento m) {
+        long toDelDate = m.data;
+        String toDelDescr = m.descrizione;
+        double toDelImp = m.importo;
+
+        String whereClause = C_DATA + "=? and " + C_DESCR + "=? and " + C_MOVIMENTO + "=?";
+        String[] whereArgs = {String.valueOf(toDelDate), toDelDescr, String.valueOf(toDelImp)};
+
+        return db.delete(TABLE_NAME, whereClause, whereArgs) > 0;
     }
 }

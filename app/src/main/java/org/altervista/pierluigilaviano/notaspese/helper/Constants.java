@@ -33,4 +33,8 @@ public final class Constants {
      * Indice del MenuItem sort_default
      */
     public final static int idx_sort_default = 1;
+    /**
+     * Tag identificativo per sortedByDate
+     */
+    public final static String SORTED_BY_DATE = "SORTED_BY_DATE";
 }

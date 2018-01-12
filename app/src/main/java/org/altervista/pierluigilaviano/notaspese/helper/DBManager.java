@@ -56,6 +56,17 @@ public class DBManager {
     }
 
     /**
+     * Elimina una riga nel db
+     * @param tblName tabella in cui eliminare il record
+     * @param whereClause colonne
+     * @param whereArgs campi
+     */
+    public int delete(String tblName, String whereClause, String[] whereArgs) {
+        SQLiteDatabase db = getDbHelper().getWritableDatabase();
+        return db.delete(tblName, whereClause, whereArgs);
+    }
+
+    /**
      * Restituisce il risultato di una query
      * @return the result of the query
      */
